@@ -1,9 +1,9 @@
 //`timescale 1 ns / 100 ps
 
 module ALU (input CLK100MHZ,
-	input [4095:0] points,				//4096 / (8 * 2) = 256 points in each set
-	output [4095:0] convexPoints,
-	output [7:0] convexSetSize,
+	input reg [4095:0] points,				//4096 / (8 * 2) = 256 points in each set
+	output reg [4095:0] convexPoints,
+	output reg [7:0] convexSetSize,
 	input CPU_RESETN);		//Same as points, 256 points
 
 	// Variables
@@ -46,74 +46,73 @@ module ALU (input CLK100MHZ,
 		ptIndex = PTSIZE * ptCount;
 
 		for (i = ptIndex; i < ptIndex + PTSIZE; i = i + 1) begin
-			currPoint[j] = lineFIFO[i];
+			currPoint[j] = points[i];
 			j = j + 1;
 		end
 	
-		for (int i = ptIndex; i < ptIndex + (PTSIZE / 2); i = i + 1) begin
-			currPoint_X[j] = lineFIFO[i];
+		for (i = ptIndex; i < ptIndex + (PTSIZE / 2); i = i + 1) begin
+			currPoint_X[j] = points[i];
 			j = j + 1;
 		end
 			
-		for (int i = ptIndex + (PTSIZE / 2); i < ptIndex + PTSIZE; i = i + 1) begin
-			currPoint_Y[j] = lineFIFO[i];
+		for (i = ptIndex + (PTSIZE / 2); i < ptIndex + PTSIZE; i = i + 1) begin
+			currPoint_Y[j] = points[i];
 			j = j + 1;
 		end
 			
 
-		for (int i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
+		for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
 			currLine[j] = lineFIFO[i];
 			j = j + 1;
 		end
 			
-		for (int i = lnIndex; i < lnIndex + (LNSIZE/2); i = i + 1) begin
+		for (i = lnIndex; i < lnIndex + (LNSIZE/2); i = i + 1) begin
 			currLine_A[j] = lineFIFO[i];
 			j = j + 1;
 		end
 			
-		for (int i = lnIndex; i < lnIndex + (PTSIZE/2); i = i + 1) begin
+		for (i = lnIndex; i < lnIndex + (PTSIZE/2); i = i + 1) begin
 			currLine_AX[j] = lineFIFO[i];
 			j = j + 1;
 		end
 			
-		for (int i = lnIndex + (PTSIZE / 2); i < lnIndex + PTSIZE; i = i + 1) begin
+		for (i = lnIndex + (PTSIZE / 2); i < lnIndex + PTSIZE; i = i + 1) begin
 			currLine_AY[j] = lineFIFO[i];
 			j = j + 1;
 		end
 			
 
-		for (int i = lnIndex + (LNSIZE/2); i < lnIndex + LNSIZE; i = i + 1) begin
+		for (i = lnIndex + (LNSIZE/2); i < lnIndex + LNSIZE; i = i + 1) begin
 			currLine_B [j] = lineFIFO[i];
 			j = j + 1;
 		end
 			
-		for (int i = lnIndex + PTSIZE; i < lnIndex + LNSIZE - (PTSIZE/2); i = i + 1) begin
+		for (i = lnIndex + PTSIZE; i < lnIndex + LNSIZE - (PTSIZE/2); i = i + 1) begin
 			currLine_BX[j] = lineFIFO[i];
 			j = j + 1;
 		end
 			
-		for (int i = lnIndex + LNSIZE - (PTSIZE; i < lnIndex + LNSIZE; i = i + 1) begin
+		for (i = lnIndex + LNSIZE - (PTSIZE / 2); i < lnIndex + LNSIZE; i = i + 1) begin
 			currLine_BY[j] = lineFIFO[i];
 			j = j + 1;
 		end
-			 2)];
 
-		for (int i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
+		for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
 			nextLineAddr[j] = lineFIFO[i];
 			j = j + 1;
 		end
 			
-		for (int i = lnIndex + LNSIZE; i < lnIndex + (LNSIZE * 2); i = i + 1) begin
+		for (i = lnIndex + LNSIZE; i < lnIndex + (LNSIZE * 2); i = i + 1) begin
 			nextLineAddr2[j] = lineFIFO[i];
 			j = j + 1;
 		end
 			
-		for (int i = cxIndex; i < cxIndex + PTSIZE; i = i + 1) begin
+		for (i = cxIndex; i < cxIndex + PTSIZE; i = i + 1) begin
 			nextCXAddr [j] = convexPoints[i];
 			j = j + 1;
 		end
 			
-		for (int i = cxIndex + PTSIZE; i < cxIndex + (PTSIZE * 2); i = i + 1) begin
+		for (i = cxIndex + PTSIZE; i < cxIndex + (PTSIZE * 2); i = i + 1) begin
 			nextCXAddr2[j] = convexPoints[i];
 			j = j + 1;
 		end
