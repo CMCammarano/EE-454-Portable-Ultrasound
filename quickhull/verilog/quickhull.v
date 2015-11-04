@@ -2,65 +2,73 @@
 
 module ALU (input CLK100MHZ,
 	input [4095:0] points,				//4096 / (8 * 2) = 256 points in each set
-	input [7:0] SS,						//Set Size, need to count up to 256 = 8 bits
 	output [4095:0] convexPoints,
 	output [7:0] convexSetSize,
-	input RESET_NEG)		//Same as points, 256 points
+	input CPU_RESETN);		//Same as points, 256 points
 
 	// Variables
-	assign PTSIZE = 16;					//Point Size: 16 bits long, two 8 bit dimensions
-	assign LNSIZE = 32;					//Line Size = 2 coordinates:  32 bits long
-	reg lineFIFO [LNSIZE * SS : 0];	//32 bits * number of points, just to be safe (100 points)
-	reg lnIndex [15:0];					//Line Index: only need 13 bits, but 16 just in case
-	reg cxIndex [15:0];					//Convex Index;only need 12 bits, but 16 just in case
-	wire ptIndex [7:0];
-	reg ptCount [7:0];
+	localparam PTSIZE = 16;					//Point Size: 16 bits long, two 8 bit dimensions
+	localparam LNSIZE = 32;					//Line Size = 2 coordinates:  32 bits long
+	localparam SS = 256;					//Set Size, need to count up to 256 = 8 bits
+	reg [LNSIZE * SS : 0] lineFIFO;	//32 bits * number of points, just to be safe (100 points)
+	reg [15:0] lnIndex;					//Line Index: only need 13 bits, but 16 just in case
+	reg [15:0] cxIndex;					//Convex Index;only need 12 bits, but 16 just in case
+	reg [7:0] ptIndex;
+	reg [7:0] ptCount;
 
-	reg xMinPoint [PTSIZE - 1 : 0];
-	reg xMaxPoint [PTSIZE - 1 : 0];
-	reg line [LNSIZE:0];
-	reg positiveCrossCount [7:0];
+	reg [PTSIZE - 1 : 0] xMinPoint;
+	reg [PTSIZE - 1 : 0] xMaxPoint;
+	reg [LNSIZE:0] line;
+	reg [7:0] positiveCrossCount;
 	
-	wire currPoint		[PTSIZE - 1 : 0];
-	wire currPoint_X	[(PTSIZE / 2) - 1 : 0];
-	wire currPoint_Y	[(PTSIZE / 2) - 1 : 0];
-	wire currLine		[LNSIZE - 1 : 0];
-	wire currLine_A		[PTSIZE - 1 : 0];
-	wire currLine_AX	[(PTSIZE / 2) - 1 : 0];
-	wire currLine_AY	[(PTSIZE / 2) - 1 : 0];
-	wire currLine_B		[PTSIZE - 1 : 0];
-	wire currLine_BX	[(PTSIZE / 2) - 1 : 0];
-	wire currLine_BY	[(PTSIZE / 2) - 1 : 0];
-	wire crossValue 	[15:0];
-	wire nextLineAddr	[LNSIZE - 1: 0];
-	wire nextLineAddr2	[LNSIZE - 1: 0];
-	wire nextCXAddr		[PTSIZE - 1: 0];
-	wire nextCXAddr2	[PTSIZE - 1: 0];
+	reg [PTSIZE - 1 : 0] furthest;
+	reg [PTSIZE - 1 : 0] currPoint;
+	reg [(PTSIZE / 2) - 1 : 0] currPoint_X;
+	reg [(PTSIZE / 2) - 1 : 0] currPoint_Y;
+	reg [LNSIZE - 1 : 0] currLine;
+	reg [PTSIZE - 1 : 0] currLine_A;
+	reg [(PTSIZE / 2) - 1 : 0] currLine_AX;
+	reg [(PTSIZE / 2) - 1 : 0] currLine_AY;
+	reg [PTSIZE - 1 : 0] currLine_B;
+	reg [(PTSIZE / 2) - 1 : 0] currLine_BX;
+	reg [(PTSIZE / 2) - 1 : 0] currLine_BY;
+	reg [15:0] crossValue;
+	reg [LNSIZE - 1: 0] nextLineAddr;
+	reg [LNSIZE - 1: 0] nextLineAddr2;
+	reg [PTSIZE - 1: 0] nextCXAddr;
+	reg [PTSIZE - 1: 0] nextCXAddr2;
 
 	reg furthestFlag;
 
-	assign ptIndex 		= PTSIZE * ptCount;
+	integer i = 0;
+	integer j = 0;
+	always @ (posedge CLK100MHZ) begin
+		ptIndex = PTSIZE * ptCount;
 
-	assign currPoint   	= lineFIFO[ptIndex + PTSIZE - 1 				: ptIndex];
-	assign currPoint_X 	= lineFIFO[ptIndex + (PTSIZE / 2) - 1  			: ptIndex];
-	assign currPoint_Y 	= lineFIFO[ptIndex + PTSIZE - 1 				: ptIndex + (PTSIZE / 2)];
+		for (i = ptIndex; i < ptIndex + PTSIZE; i = i + 1) begin
+			currPoint[j] = lineFIFO[i];
+			j = j + 1;
+		end
+	
+		currPoint_X = lineFIFO[ptIndex + (PTSIZE / 2) - 1 : ptIndex];
+		currPoint_Y = lineFIFO[ptIndex + PTSIZE - 1 : ptIndex + (PTSIZE / 2)];
 
-	assign currLine 	= lineFIFO[lnIndex + LNSIZE - 1 				: lnIndex];
-	assign currLine_A 	= lineFIFO[lnIndex + (LNSIZE/2) - 1 			: lnIndex];
-	assign currLine_AX 	= lineFIFO[lnIndex + (PTSIZE/2) - 1 			: lnIndex];
-	assign currLine_AY 	= lineFIFO[lnIndex + PTSIZE - 1 				: lnIndex + (PTSIZE / 2)];
+		currLine = lineFIFO[lnIndex + LNSIZE - 1 : lnIndex];
+		currLine_A = lineFIFO[lnIndex + (LNSIZE/2) - 1 : lnIndex];
+		currLine_AX = lineFIFO[lnIndex + (PTSIZE/2) - 1 : lnIndex];
+		currLine_AY = lineFIFO[lnIndex + PTSIZE - 1 : lnIndex + (PTSIZE / 2)];
 
-	assign currLine_B 	= lineFIFO[lnIndex + LNSIZE - 1 				: lnIndex + (LNSIZE/2)];
-	assign currLine_BX 	= lineFIFO[lnIndex + LNSIZE - (PTSIZE/2) - 1 	: lnIndex + PTSIZE];
-	assign currLine_BY 	= lineFIFO[lnIndex + LNSIZE - 1 				: lnIndex + LNSIZE - (PTSIZE / 2)];
+		currLine_B 	= lineFIFO[lnIndex + LNSIZE - 1 : lnIndex + (LNSIZE/2)];
+		currLine_BX = lineFIFO[lnIndex + LNSIZE - (PTSIZE/2) - 1 : lnIndex + PTSIZE];
+		currLine_BY = lineFIFO[lnIndex + LNSIZE - 1 : lnIndex + LNSIZE - (PTSIZE / 2)];
 
-	assign nextLineAddr = lineFIFO[lnIndex + LNSIZE - 1 : lnIndex];
-	assign nextLineAddr2= lineFIFO[lnIndex + (LNSIZE * 2) - 1 : lnIndex + LNSIZE];
-	assign nextCXAddr 	= convexPoints[cxIndex + PTSIZE - 1: cxIndex];
-	assign nextCXAddr2 	= convexPoints[cxIndex + (PTSIZE * 2) - 1: cxIndex + PTSIZE];
-
-	assign crossValue 	= (((currLine_AX - currPoint_X) * (currLine_BY - currPoint_Y)) - ((currLine_AY - currPoint_Y) * (currLine_BX - currLine_X)));
-
+		nextLineAddr = lineFIFO[lnIndex + LNSIZE - 1 : lnIndex];
+		nextLineAddr2 = lineFIFO[lnIndex + (LNSIZE * 2) - 1 : lnIndex + LNSIZE];
+		nextCXAddr 	= convexPoints[cxIndex + PTSIZE - 1: cxIndex];
+		nextCXAddr2 = convexPoints[cxIndex + (PTSIZE * 2) - 1: cxIndex + PTSIZE];
+		
+		crossValue = (((currLine_AX - currPoint_X) * (currLine_BY - currPoint_Y)) - ((currLine_AY - currPoint_Y) * (currLine_BX - currPoint_X)));
+	end
 	// Clock Slow
 	reg [26:0] DIV_CLK;
 	
@@ -90,7 +98,7 @@ module ALU (input CLK100MHZ,
 
 	//NSL and State Machine
 	always @(posedge DIV_CLK[1:0]) begin
-		if (!RESET_NEG) begin
+		if (!CPU_RESETN) begin
 			//Reset
 			state <= INITIAL;
 		end
@@ -136,7 +144,7 @@ module ALU (input CLK100MHZ,
 				end
 				else begin
 					ptCount <= 0;
-					state <= FIND_MIN;
+					state <= FIND_XMIN;
 				end
 			end
 
@@ -157,7 +165,7 @@ module ALU (input CLK100MHZ,
 				//NSL
 				if (ptCount != (SS - 1)) begin
 					ptCount <= ptCount + 1;
-					state <= FIND_XMAX					
+					state <= FIND_XMAX;					
 				end
 				else begin
 					ptCount <= 0;
@@ -178,7 +186,7 @@ module ALU (input CLK100MHZ,
 
 			CROSS: begin
 				//State Logic
-				if (cross > 0) begin
+				if (crossValue > 0) begin
 					positiveCrossCount <= positiveCrossCount + 1;
 					if (furthestFlag == 0) begin
 						furthest <= currPoint;
@@ -210,7 +218,7 @@ module ALU (input CLK100MHZ,
 				//TODO: get number of positive cross and furthest point
 				if (positiveCrossCount == 1) begin
 					nextCXAddr <= currLine_A;
-					nextCXAddr2 <= furthestPoint;
+					nextCXAddr2 <= furthest;
 					cxIndex <= cxIndex + (2 * PTSIZE);
 					convexSetSize <= convexSetSize + 2;
 
@@ -226,8 +234,8 @@ module ALU (input CLK100MHZ,
 					lnIndex <= lnIndex - LNSIZE;
 				end
 				else begin
-					nextLineAddr 	<= {currLine_A, furthestPoint};
-					nextLineAddr2	<= {furthestPoint, point_B};
+					nextLineAddr 	<= {currLine_A, furthest};
+					nextLineAddr2	<= {furthest, currLine_B};
 					lnIndex <= lnIndex + LNSIZE;
 				end
 				// NSL
