@@ -50,23 +50,74 @@ module ALU (input CLK100MHZ,
 			j = j + 1;
 		end
 	
-		currPoint_X = lineFIFO[ptIndex + (PTSIZE / 2) - 1 : ptIndex];
-		currPoint_Y = lineFIFO[ptIndex + PTSIZE - 1 : ptIndex + (PTSIZE / 2)];
+		for (int i = ptIndex; i < ptIndex + (PTSIZE / 2); i = i + 1) begin
+			currPoint_X[j] = lineFIFO[i];
+			j = j + 1;
+		end
+			
+		for (int i = ptIndex + (PTSIZE / 2); i < ptIndex + PTSIZE; i = i + 1) begin
+			currPoint_Y[j] = lineFIFO[i];
+			j = j + 1;
+		end
+			
 
-		currLine = lineFIFO[lnIndex + LNSIZE - 1 : lnIndex];
-		currLine_A = lineFIFO[lnIndex + (LNSIZE/2) - 1 : lnIndex];
-		currLine_AX = lineFIFO[lnIndex + (PTSIZE/2) - 1 : lnIndex];
-		currLine_AY = lineFIFO[lnIndex + PTSIZE - 1 : lnIndex + (PTSIZE / 2)];
+		for (int i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
+			currLine[j] = lineFIFO[i];
+			j = j + 1;
+		end
+			
+		for (int i = lnIndex; i < lnIndex + (LNSIZE/2); i = i + 1) begin
+			currLine_A[j] = lineFIFO[i];
+			j = j + 1;
+		end
+			
+		for (int i = lnIndex; i < lnIndex + (PTSIZE/2); i = i + 1) begin
+			currLine_AX[j] = lineFIFO[i];
+			j = j + 1;
+		end
+			
+		for (int i = lnIndex + (PTSIZE / 2); i < lnIndex + PTSIZE; i = i + 1) begin
+			currLine_AY[j] = lineFIFO[i];
+			j = j + 1;
+		end
+			
 
-		currLine_B 	= lineFIFO[lnIndex + LNSIZE - 1 : lnIndex + (LNSIZE/2)];
-		currLine_BX = lineFIFO[lnIndex + LNSIZE - (PTSIZE/2) - 1 : lnIndex + PTSIZE];
-		currLine_BY = lineFIFO[lnIndex + LNSIZE - 1 : lnIndex + LNSIZE - (PTSIZE / 2)];
+		for (int i = lnIndex + (LNSIZE/2); i < lnIndex + LNSIZE; i = i + 1) begin
+			currLine_B [j] = lineFIFO[i];
+			j = j + 1;
+		end
+			
+		for (int i = lnIndex + PTSIZE; i < lnIndex + LNSIZE - (PTSIZE/2); i = i + 1) begin
+			currLine_BX[j] = lineFIFO[i];
+			j = j + 1;
+		end
+			
+		for (int i = lnIndex + LNSIZE - (PTSIZE; i < lnIndex + LNSIZE; i = i + 1) begin
+			currLine_BY[j] = lineFIFO[i];
+			j = j + 1;
+		end
+			 2)];
 
-		nextLineAddr = lineFIFO[lnIndex + LNSIZE - 1 : lnIndex];
-		nextLineAddr2 = lineFIFO[lnIndex + (LNSIZE * 2) - 1 : lnIndex + LNSIZE];
-		nextCXAddr 	= convexPoints[cxIndex + PTSIZE - 1: cxIndex];
-		nextCXAddr2 = convexPoints[cxIndex + (PTSIZE * 2) - 1: cxIndex + PTSIZE];
-		
+		for (int i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
+			nextLineAddr[j] = lineFIFO[i];
+			j = j + 1;
+		end
+			
+		for (int i = lnIndex + LNSIZE; i < lnIndex + (LNSIZE * 2); i = i + 1) begin
+			nextLineAddr2[j] = lineFIFO[i];
+			j = j + 1;
+		end
+			
+		for (int i = cxIndex; i < cxIndex + PTSIZE; i = i + 1) begin
+			nextCXAddr [j] = convexPoints[i];
+			j = j + 1;
+		end
+			
+		for (int i = cxIndex + PTSIZE; i < cxIndex + (PTSIZE * 2); i = i + 1) begin
+			nextCXAddr2[j] = convexPoints[i];
+			j = j + 1;
+		end
+			
 		crossValue = (((currLine_AX - currPoint_X) * (currLine_BY - currPoint_Y)) - ((currLine_AY - currPoint_Y) * (currLine_BX - currPoint_X)));
 	end
 	// Clock Slow
