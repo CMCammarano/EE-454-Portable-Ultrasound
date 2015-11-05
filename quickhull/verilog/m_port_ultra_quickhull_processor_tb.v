@@ -9,7 +9,7 @@
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
-module quickhull;
+module m_port_ultra_quickhull_processor_tb;
 
 	// Inputs
 	reg CLK100MHZ;
@@ -28,7 +28,7 @@ module quickhull;
 	parameter CLK_PERIOD = 20;
 
 	// Instantiate the Unit Under Test (UUT)
-	quickhull UUT(
+	m_port_ultra_quickhull_processor UUT(
 		//Inputs
 		.CLK100MHZ(CLK100MHZ),
 		.CPU_RESETN(CPU_RESETN),
@@ -48,6 +48,8 @@ module quickhull;
 		end
 	end	
 		
+	integer counter;
+	
 	initial begin : STIMULUS
 		
 		file_results = $fopen("output_results.txt", "w");
@@ -61,10 +63,10 @@ module quickhull;
 
 		$fwrite(file_results, "Points:     ");
 		$write(file_results, "Points:     ");
-		integer counter;
+		
 		for (counter = 0; counter < convexSetSize; counter = counter + 1) begin
-			$fwrite(file_results, " %h", convexPoints[(16*counter)-1 : (16*counter)]);
-			$write(file_results, " %h", convexPoints[(16*counter)-1 : (16*counter)]);
+			//$fwrite(file_results, " %h", convexPoints[(16*counter)-1 +: (16*counter)]);
+			//$write(file_results, " %h", convexPoints[(16*counter)-1 +: (16*counter)]);
 		end
 
 

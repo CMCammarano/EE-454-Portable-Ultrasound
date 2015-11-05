@@ -1,6 +1,6 @@
 //`timescale 1 ns / 100 ps
 
-module quickhull (input CLK100MHZ,
+module m_port_ultra_quickhull_processor (input CLK100MHZ,
 	input reg [4095:0] points,				//4096 / (8 * 2) = 256 points in each set
 	input reg [7:0] SS,
 	output reg [4095:0] convexPoints,
