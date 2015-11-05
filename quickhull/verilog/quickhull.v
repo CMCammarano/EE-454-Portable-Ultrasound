@@ -1,6 +1,6 @@
 //`timescale 1 ns / 100 ps
 
-module ALU (input CLK100MHZ,
+module quickhull (input CLK100MHZ,
 	input reg [4095:0] points,				//4096 / (8 * 2) = 256 points in each set
 	output reg [4095:0] convexPoints,
 	output reg [7:0] convexSetSize,
@@ -136,7 +136,8 @@ module ALU (input CLK100MHZ,
 		END 			=	7'b1000000;
 
 	// Clock Divider
-	always @(posedge CLK100MHZ, negedge CPU_RESETN) begin							
+	always @(posedge CLK100MHZ, negedge CPU_RESETN) begin	
+
 		if (!CPU_RESETN) begin
 			DIV_CLK <= 0;
 		end
@@ -148,6 +149,8 @@ module ALU (input CLK100MHZ,
 
 	//NSL and State Machine
 	always @(posedge DIV_CLK[1:0]) begin
+
+	
 		if (!CPU_RESETN) begin
 			//Reset
 			state <= INITIAL;
