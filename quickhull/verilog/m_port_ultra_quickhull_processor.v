@@ -149,7 +149,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 	end
 
 	//NSL and State Machine
-	always @(posedge CLK100MHZ) begin
+	always @(posedge CLK100MHZ, negedge CPU_RESETN) begin
 
 	
 		if (!CPU_RESETN) begin
