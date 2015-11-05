@@ -218,4 +218,8 @@ pip-log.txt
 #############
 ## Project
 #############
-Tests/
+work/
+*.wlf
+*.mpf
+*.mti
+*.out
