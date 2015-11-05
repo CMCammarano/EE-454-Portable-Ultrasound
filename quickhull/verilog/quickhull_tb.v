@@ -21,6 +21,9 @@ module quickhull;
 	wire [4095:0] convexPoints;
 	wire [7:0] convexSetSize;
 
+	// File
+	integer file_results;
+
 	// Parameters
 	parameter CLK_PERIOD = 20;
 
@@ -47,6 +50,8 @@ module quickhull;
 		
 	initial begin : STIMULUS
 		
+		file_results = $fopen("output_results.txt", "w");
+
 		// Initialize Inputs
 		// === Small input: 15 points ===
 		CLK100MHZ = 0;
@@ -128,6 +133,15 @@ module quickhull;
 					   0000001100000100
 					   0000110000001001
 					   0000101100000001;
+
+		$fwrite(file_results, "Points:     ");
+		$write(file_results, "Points:     ");
+		integer counter;
+		for (counter = 0; counter < convexSetSize; counter = counter + 1) begin
+			$fwrite(file_results, " %h", convexPoints[(16*counter)-1 : (16*counter)]);
+			$write(file_results, " %h", convexPoints[(16*counter)-1 : (16*counter)]);
+		end
+
 
 		// Wait for global reset to finish
 		#100;
@@ -282,8 +296,8 @@ module quickhull;
 		// Give a long time for machine to finish
 		#5000;
 
+	$fclose (file_results);	 
 
-		
 	end
 		  
 endmodule
