@@ -29,10 +29,13 @@ string convertToBinary(int num){
 int main(){
 
 	int choice = 0;
-	cout << "Enter 1 for manual input, enter 2 for random: " << endl; cin >> choice; cout << endl;
+	cout << "Enter 1 for manual input, enter any other number to generate random: " << endl; cin >> choice; cout << endl;
 	vector<string>* binaryVector = new vector<string>;
 	vector<string>* decimalVector = new vector<string>;
 	ofstream fout("points.txt");
+
+	string filler = "0000000000000000";
+
 
 		if (choice == 1){
 
@@ -61,7 +64,6 @@ int main(){
 			++count;
 		}
 
-		string filler = "0000000000000000";
 
 		fout << "--- Points ---" << endl;
 		for (int i = 0; i < decimalVector -> size(); ++i){
@@ -96,7 +98,7 @@ int main(){
 		string numStringB;
 		vector<string>* schemeVector = new vector<string>;
 
-		for (int i = 0; i < 256; ++i){
+		for (int i = 0; i < choice; ++i){
 			numA = rand() % 256;
 			numB = rand() % 256;
 			numStringA = convertToBinary(numA);
@@ -114,7 +116,7 @@ int main(){
 			}
 		}
 
-		fout << "--- Scheme --- " << endl;
+		fout << endl << "--- Scheme --- " << endl;
 		fout << "(define points (list" << endl;
 		for (int i = 0; i < decimalVector -> size(); ++i){
 			fout << schemeVector -> at(i) + " ";
@@ -125,6 +127,13 @@ int main(){
 		fout << "))" << endl;
 
 		fout << endl << "--- Binary ---" << endl;
+		fout << endl;
+		for (int i = 0; i < 256 - binaryVector -> size(); ++i){
+			fout << filler;
+			if (i % 4 == 3){
+				fout << endl;
+			}
+		}
 		fout << endl;
 		for (int i = 0; i < binaryVector -> size(); ++i){
 			fout << binaryVector -> at(i);

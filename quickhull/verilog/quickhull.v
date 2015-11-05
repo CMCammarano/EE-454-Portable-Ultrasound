@@ -2,6 +2,7 @@
 
 module quickhull (input CLK100MHZ,
 	input reg [4095:0] points,				//4096 / (8 * 2) = 256 points in each set
+	input reg [7:0] SS,
 	output reg [4095:0] convexPoints,
 	output reg [7:0] convexSetSize,
 	input CPU_RESETN);		//Same as points, 256 points
@@ -9,8 +10,8 @@ module quickhull (input CLK100MHZ,
 	// Variables
 	localparam PTSIZE = 16;					//Point Size: 16 bits long, two 8 bit dimensions
 	localparam LNSIZE = 32;					//Line Size = 2 coordinates:  32 bits long
-	localparam SS = 256;					//Set Size, need to count up to 256 = 8 bits
-	reg [LNSIZE * SS : 0] lineFIFO;	//32 bits * number of points, just to be safe (100 points)
+	// localparam SS = 256;					//Set Size, need to count up to 256 = 8 bits
+	reg [LNSIZE * 256 : 0] lineFIFO;	//32 bits * number of points, just to be safe (100 points)
 	reg [15:0] lnIndex;					//Line Index: only need 13 bits, but 16 just in case
 	reg [15:0] cxIndex;					//Convex Index;only need 12 bits, but 16 just in case
 	reg [7:0] ptIndex;
