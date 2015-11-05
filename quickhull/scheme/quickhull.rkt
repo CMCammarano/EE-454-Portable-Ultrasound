@@ -100,9 +100,10 @@
 (make-point 43 180) (make-point 94 244) (make-point 151 98) (make-point 60 12) (make-point 139 164) (make-point 74 4) (make-point 70 156) (make-point 142 163) (make-point 9 5) (make-point 242 220) (make-point 77 107) (make-point 29 253) (make-point 54 36) (make-point 130 175) (make-point 85 105) (make-point 107 21) 
 (make-point 99 212) (make-point 181 39) (make-point 207 243) (make-point 52 29) (make-point 177 43) (make-point 186 217) (make-point 12 95) (make-point 175 140) (make-point 36 120) (make-point 85 45) (make-point 59 204) (make-point 206 136) (make-point 171 99) (make-point 153 192) (make-point 85 101) (make-point 90 253) 
 ))
+(define start-time current-seconds)
 (define hull-points (quickhull points))
-
-(quickhull hull-points)
+(define end-time current-seconds)
+hull-points
 
 ;;Draw out points and hull
 (define draw-points (lambda (list-of-points)
