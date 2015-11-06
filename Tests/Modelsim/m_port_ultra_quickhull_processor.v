@@ -42,8 +42,8 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 	reg [PTSIZE - 1 : 0] currLine_B;
 	reg [(PTSIZE / 2) - 1 : 0] currLine_BX;
 	reg [(PTSIZE / 2) - 1 : 0] currLine_BY;
-	reg signed [15:0] crossValue;
-	reg signed [15:0] furthestCrossValue;
+	reg signed [31:0] crossValue;
+	reg signed [31:0] furthestCrossValue;
 	reg [LNSIZE - 1: 0] nextLineAddr;
 	reg [LNSIZE - 1: 0] nextLineAddr2;
 	reg [PTSIZE - 1: 0] nextCXAddr;
@@ -269,6 +269,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 				xMinPoint <= 0;
 				xMaxPoint <= 0;
 				crossValue <= 0;
+				furthest <= 0;
 				furthestCrossValue <= 0;
 				furthestFlag <= 0;
 				convexSetSize <= 0;
@@ -293,7 +294,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 				end
 
 				//NSL
-				if (ptCount != (SS - 1)) begin
+				if (ptCount != (SS)) begin
 					ptCount <= ptCount + 1;
 					state <= FIND_XMAX;			
 				end
@@ -318,7 +319,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 				end
 
 				//NSL
-				if (ptCount != (SS - 1)) begin
+				if (ptCount != (SS)) begin
 					ptCount <= ptCount + 1;
 					state <= FIND_XMIN;					
 				end
