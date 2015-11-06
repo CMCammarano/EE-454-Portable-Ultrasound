@@ -25,6 +25,8 @@ module m_quickhull_tb;
 	wire [15:0] lnIndex;
 	wire [7:0] ptCount;
 	wire [31:0] currLine;
+	wire [15:0] currPoint;
+	wire [15:0] furthest;
 
 	wire QINITIAL, QFIND_MAX, QFIND_MIN, QHULL_START, QCROSS, QHULL_RECURSE, QEND;
 	// File
@@ -48,6 +50,8 @@ module m_quickhull_tb;
 		.lnIndexOutput(lnIndex),
 		.ptCountOutput(ptCount),
 		.currentLineOutput(currLine),
+		.currentPointOutput(currPoint),
+		.furthestOutput(furthest),
 		.QINITIAL(QINITIAL),
 		.QFIND_MAX(QFIND_MAX),
 		.QFIND_MIN(QFIND_MIN),
@@ -93,7 +97,7 @@ module m_quickhull_tb;
 		CPU_RESETN = 1;	#20;
 		
 		// Give a long time for machine to finish
-		#5000;
+		#500000;
 		
 		/*
 		//$fwrite(file_results, "Points:     ");
