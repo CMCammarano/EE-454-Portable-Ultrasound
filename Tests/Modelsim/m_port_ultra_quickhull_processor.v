@@ -10,6 +10,8 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 	output [15:0] lnIndexOutput,
 	output [7:0] ptCountOutput,
 	output [31:0] currentLineOutput,
+	output [15:0] currentPointOutput,
+	output [15:0] furthestOutput,
 	output QINITIAL, QFIND_MAX, QFIND_MIN, QHULL_START, QCROSS, QHULL_RECURSE, QEND,
 	input CPU_RESETN);		//Same as points, 256 points
 
@@ -41,6 +43,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 	reg [(PTSIZE / 2) - 1 : 0] currLine_BX;
 	reg [(PTSIZE / 2) - 1 : 0] currLine_BY;
 	reg signed [15:0] crossValue;
+	reg signed [15:0] furthestCrossValue;
 	reg [LNSIZE - 1: 0] nextLineAddr;
 	reg [LNSIZE - 1: 0] nextLineAddr2;
 	reg [PTSIZE - 1: 0] nextCXAddr;
@@ -54,6 +57,8 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 	assign lnIndexOutput = lnIndex;
 	assign ptCountOutput = ptCount;
 	assign currentLineOutput = currLine;
+	assign currentPointOutput = currPoint;
+	assign furthestOutput = furthest;
 
 	// State Machine Implementation
 	reg[6:0] state;
@@ -264,6 +269,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 				xMinPoint <= 0;
 				xMaxPoint <= 0;
 				crossValue <= 0;
+				furthestCrossValue <= 0;
 				furthestFlag <= 0;
 				convexSetSize <= 0;
 				convexPoints <= 0;
@@ -346,14 +352,15 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 
 			CROSS: begin
 				//State Logic
-				if (crossValue > 0) begin
+				if (crossValue > 0 && ptCount != (SS)) begin
 					positiveCrossCount <= positiveCrossCount + 1;
 					if (furthestFlag == 0) begin
+						furthestCrossValue <= crossValue;
 						furthest <= currPoint;
 						furthestFlag <= 1;
 					end
 					else begin
-						if (furthest < currPoint) begin
+						if (furthestCrossValue < crossValue) begin
 							furthest <= currPoint;
 						end
 					end
@@ -392,7 +399,13 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 					cxIndex <= cxIndex + (2 * PTSIZE);
 					convexSetSize <= convexSetSize + 2;
 
+					/*
 					//nextLineAddr <= 0;
+					for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
+						lineFIFO[i] = 0;
+						j = j + 1;
+					end
+					*/
 					lnIndex <= lnIndex - LNSIZE;
 				end
 				else if (positiveCrossCount == 0) begin
@@ -405,7 +418,13 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 					cxIndex <= cxIndex + PTSIZE;
 					convexSetSize <= convexSetSize + 1;
 
+					/*
 					//nextLineAddr <= 0;
+					for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
+						lineFIFO[i] = 0;
+						j = j + 1;
+					end
+					*/
 					lnIndex <= lnIndex - LNSIZE;
 				end
 				else begin
@@ -429,6 +448,8 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 				// NSL
 				if ((lnIndex) != 0) begin
 					positiveCrossCount <= 0;
+					furthest <= 0;
+					furthestCrossValue <= 0;
 					state <= CROSS;
 				end
 				else begin
