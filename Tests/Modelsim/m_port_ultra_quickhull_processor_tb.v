@@ -9,7 +9,7 @@
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
-module m_port_ultra_quickhull_processor_tb;
+module m_quickhull_tb;
 
 	// Inputs
 	reg CLK100MHZ;
@@ -22,6 +22,9 @@ module m_port_ultra_quickhull_processor_tb;
 	wire [7:0] convexSetSize;
 	wire [7:0] positiveCrossCount;
 	wire [15:0] crossValue;
+	wire [15:0] lnIndex;
+	wire [7:0] ptCount;
+	wire [31:0] currLine;
 
 	wire QINITIAL, QFIND_MAX, QFIND_MIN, QHULL_START, QCROSS, QHULL_RECURSE, QEND;
 	// File
@@ -42,6 +45,9 @@ module m_port_ultra_quickhull_processor_tb;
 		.convexSetSizeOutput(convexSetSize),
 		.positiveCrossCountOutput(positiveCrossCount),
 		.crossValueOutput(crossValue),
+		.lnIndexOutput(lnIndex),
+		.ptCountOutput(ptCount),
+		.currentLineOutput(currLine),
 		.QINITIAL(QINITIAL),
 		.QFIND_MAX(QFIND_MAX),
 		.QFIND_MIN(QFIND_MIN),
@@ -89,6 +95,7 @@ module m_port_ultra_quickhull_processor_tb;
 		// Give a long time for machine to finish
 		#5000;
 		
+		/*
 		//$fwrite(file_results, "Points:     ");
 		$write("Points:     ");
 		
@@ -145,7 +152,7 @@ module m_port_ultra_quickhull_processor_tb;
 		
 		//$fwrite(file_results, "Points:     ");
 		$write("Points:     ");
-		
+		*/
 		// Wait for global reset to finish
 		#100;
 

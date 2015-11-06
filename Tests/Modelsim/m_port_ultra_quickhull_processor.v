@@ -7,6 +7,9 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 	output [7:0] convexSetSizeOutput,
 	output [7:0] positiveCrossCountOutput,
 	output [15:0] crossValueOutput,
+	output [15:0] lnIndexOutput,
+	output [7:0] ptCountOutput,
+	output [31:0] currentLineOutput,
 	output QINITIAL, QFIND_MAX, QFIND_MIN, QHULL_START, QCROSS, QHULL_RECURSE, QEND,
 	input CPU_RESETN);		//Same as points, 256 points
 
@@ -14,7 +17,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 	localparam PTSIZE = 16;					//Point Size: 16 bits long, two 8 bit dimensions
 	localparam LNSIZE = 32;					//Line Size = 2 coordinates:  32 bits long
 	// localparam SS = 256;					//Set Size, need to count up to 256 = 8 bits
-	reg [LNSIZE * 256 : 0] lineFIFO;	//32 bits * number of points, just to be safe (100 points)
+	reg [LNSIZE * 256 - 1 : 0] lineFIFO;	//32 bits * number of points, just to be safe (100 points)
 	reg [15:0] lnIndex;					//Line Index: only need 13 bits, but 16 just in case
 	reg [15:0] cxIndex;					//Convex Index;only need 12 bits, but 16 just in case
 	reg [7:0] ptIndex;
@@ -37,7 +40,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 	reg [PTSIZE - 1 : 0] currLine_B;
 	reg [(PTSIZE / 2) - 1 : 0] currLine_BX;
 	reg [(PTSIZE / 2) - 1 : 0] currLine_BY;
-	reg [15:0] crossValue;
+	reg signed [15:0] crossValue;
 	reg [LNSIZE - 1: 0] nextLineAddr;
 	reg [LNSIZE - 1: 0] nextLineAddr2;
 	reg [PTSIZE - 1: 0] nextCXAddr;
@@ -48,6 +51,9 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 	assign convexSetSizeOutput = convexSetSize;
 	assign positiveCrossCountOutput = positiveCrossCount;
 	assign crossValueOutput = crossValue;
+	assign lnIndexOutput = lnIndex;
+	assign ptCountOutput = ptCount;
+	assign currentLineOutput = currLine;
 
 	// State Machine Implementation
 	reg[6:0] state;
@@ -214,6 +220,8 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 		end
 		
 		j = 0;
+	
+/* 	
 		for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
 			nextLineAddr[j] = lineFIFO[i];
 			j = j + 1;
@@ -227,16 +235,16 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 		
 		j = 0;
 		for (i = cxIndex; i < cxIndex + PTSIZE; i = i + 1) begin
-			nextCXAddr [j] = points[i];
+			nextCXAddr[j] = convexPoints[i];
 			j = j + 1;
 		end
 		
 		j = 0;
 		for (i = cxIndex + PTSIZE; i < cxIndex + (PTSIZE * 2); i = i + 1) begin
-			nextCXAddr2[j] = points[i];
+			nextCXAddr2[j] = convexPoints[i];
 			j = j + 1;
 		end
-			
+			 */
 		crossValue = (((currLine_AX - currPoint_X) * (currLine_BY - currPoint_Y)) - ((currLine_AY - currPoint_Y) * (currLine_BX - currPoint_X)));
 	
 		if (!CPU_RESETN) begin
@@ -247,7 +255,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 			INITIAL: begin
 				// State Logic
 				lineFIFO <= 0;
-				lnIndex <= 0;
+				lnIndex <= 32;
 				cxIndex <= 0;
 				line <= 0;
 				ptIndex <= 0;
@@ -316,8 +324,19 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 
 			HULL_START: begin
 				// State Logic
-				nextLineAddr  <= {xMinPoint, xMaxPoint};
-				nextLineAddr2 <= {xMaxPoint, xMinPoint};
+				nextLineAddr = {xMinPoint, xMaxPoint};
+				j = 0;
+				for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
+					lineFIFO[i] = nextLineAddr[j];
+					j = j + 1;
+				end
+				
+				nextLineAddr2 = {xMaxPoint, xMinPoint};
+				j = 0;
+				for (i = lnIndex + LNSIZE; i < lnIndex + (LNSIZE * 2); i = i + 1) begin
+					lineFIFO[i] = nextLineAddr2[j];
+					j = j + 1;
+				end				
 				lnIndex <= lnIndex + LNSIZE;
 				
 				// NSL
@@ -341,7 +360,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 				end
 
 				//NSL
-				if (ptCount != (SS - 1)) begin
+				if (ptCount != (SS)) begin
 					ptCount <= ptCount + 1;
 					state <= CROSS;
 				end
@@ -358,29 +377,58 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 
 				//TODO: get number of positive cross and furthest point
 				if (positiveCrossCount == 1) begin
-					nextCXAddr <= currLine_A;
-					nextCXAddr2 <= furthest;
+					nextCXAddr = currLine_A;
+					j = 0;
+					for (i = cxIndex; i < cxIndex + PTSIZE; i = i + 1) begin
+						convexPoints[i] = nextCXAddr[j];
+						j = j + 1;
+					end
+					nextCXAddr2 = furthest;
+					j = 0;
+					for (i = cxIndex + PTSIZE; i < cxIndex + (PTSIZE * 2); i = i + 1) begin
+						convexPoints[i] = nextCXAddr2[j];
+						j = j + 1;
+					end
 					cxIndex <= cxIndex + (2 * PTSIZE);
 					convexSetSize <= convexSetSize + 2;
 
-					nextLineAddr <= 0;
+					//nextLineAddr <= 0;
 					lnIndex <= lnIndex - LNSIZE;
 				end
 				else if (positiveCrossCount == 0) begin
-					nextCXAddr <= currLine_A;
+					nextCXAddr = currLine_A;
+					j = 0;
+					for (i = cxIndex; i < cxIndex + PTSIZE; i = i + 1) begin
+						convexPoints[i] = nextCXAddr[j];
+						j = j + 1;
+					end
 					cxIndex <= cxIndex + PTSIZE;
 					convexSetSize <= convexSetSize + 1;
 
-					nextLineAddr <= 0;
+					//nextLineAddr <= 0;
 					lnIndex <= lnIndex - LNSIZE;
 				end
 				else begin
-					nextLineAddr 	<= {currLine_A, furthest};
-					nextLineAddr2	<= {furthest, currLine_B};
+					nextLineAddr 	= {furthest, currLine_A};
+					nextLineAddr2	= {currLine_B, furthest};
+					//nextLineAddr = {currLine_A[15],currLine_A[14],currLine_A[13],currLine_A[12],currLine_A[11],currLine_A[10],currLine_A[9],currLine_A[8],currLine_A[7],currLine_A[6],currLine_A[5],currLine_A[4],currLine_A[3],currLine_A[2],currLine_A[1],currLine_A[0],furthest[15],furthest[14],furthest[13],furthest[12],furthest[11],furthest[10],furthest[9],furthest[8],furthest[7],furthest[6],furthest[5],furthest[4],furthest[3],furthest[2],furthest[1],furthest[0]};
+					//nextLineAddr2 = {furthest[15],furthest[14],furthest[13],furthest[12],furthest[11],furthest[10],furthest[9],furthest[8],furthest[7],furthest[6],furthest[5],furthest[4],furthest[3],furthest[2],furthest[1],furthest[0],currLine_B[15],currLine_B[14],currLine_B[13],currLine_B[12],currLine_B[11],currLine_B[10],currLine_B[9],currLine_B[8],currLine_B[7],currLine_B[6],currLine_B[5],currLine_B[4],currLine_B[3],currLine_B[2],currLine_B[1],currLine_B[0]};
+					j = 0;
+					for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
+						lineFIFO[i] = nextLineAddr[j];
+						j = j + 1;
+					end
+					
+					j = 0;
+					for (i = lnIndex + LNSIZE; i < lnIndex + (LNSIZE * 2); i = i + 1) begin
+						lineFIFO[i] = nextLineAddr2[j];
+						j = j + 1;
+					end						
 					lnIndex <= lnIndex + LNSIZE;
 				end
 				// NSL
 				if ((lnIndex) != 0) begin
+					positiveCrossCount <= 0;
 					state <= CROSS;
 				end
 				else begin
