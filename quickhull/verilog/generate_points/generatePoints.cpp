@@ -99,8 +99,8 @@ int main(){
 		vector<string>* schemeVector = new vector<string>;
 
 		for (int i = 0; i < choice; ++i){
-			numA = rand() % 256;
-			numB = rand() % 256;
+			numA = rand() % 32;
+			numB = rand() % 32;
 			numStringA = convertToBinary(numA);
 			numStringB = convertToBinary(numB);
 			binaryVector -> push_back(numStringB + numStringA);
