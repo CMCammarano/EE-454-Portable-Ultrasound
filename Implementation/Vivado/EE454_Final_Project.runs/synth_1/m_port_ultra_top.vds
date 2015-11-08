@@ -1,0 +1,152 @@
+#-----------------------------------------------------------
+# Vivado v2015.2 (64-bit)
+# SW Build 1266856 on Fri Jun 26 16:35:25 MDT 2015
+# IP Build 1264090 on Wed Jun 24 14:22:01 MDT 2015
+# Start of session at: Sat Nov 07 21:54:14 2015
+# Process ID: 4972
+# Log file: C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.runs/synth_1/m_port_ultra_top.vds
+# Journal file: C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.runs/synth_1\vivado.jou
+#-----------------------------------------------------------
+source m_port_ultra_top.tcl -notrace
+Command: synth_design -top m_port_ultra_top -part xc7a100tcsg324-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a100t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a100t'
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 244.746 ; gain = 68.488
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'm_port_ultra_top' [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_top.v:23]
+INFO: [Synth 8-638] synthesizing module 'm_port_ultra' [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra.v:23]
+	Parameter INIT bound to: 5'b00001 
+	Parameter PULSE bound to: 5'b00010 
+	Parameter DIVIDE bound to: 5'b00100 
+	Parameter CONVEX_HULL bound to: 5'b01000 
+	Parameter DISPLAY bound to: 5'b10000 
+INFO: [Synth 8-638] synthesizing module 'm_port_ultra_processor_array' [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_processor_array.v:23]
+INFO: [Synth 8-638] synthesizing module 'm_port_ultra_quickhull' [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:3]
+	Parameter PTSIZE bound to: 16 - type: integer 
+	Parameter LNSIZE bound to: 32 - type: integer 
+	Parameter INITIAL bound to: 7'b0000001 
+	Parameter FIND_XMAX bound to: 7'b0000010 
+	Parameter FIND_XMIN bound to: 7'b0000100 
+	Parameter HULL_START bound to: 7'b0001000 
+	Parameter CROSS bound to: 7'b0010000 
+	Parameter HULL_RECURSE bound to: 7'b0100000 
+	Parameter END bound to: 7'b1000000 
+WARNING: [Synth 8-324] index 16 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 17 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 18 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 19 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 20 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 21 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 22 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 23 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 24 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 25 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 26 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 27 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 28 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 29 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 30 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 31 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 32 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 33 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 34 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 35 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 36 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 37 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 38 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 39 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 40 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 41 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 42 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 43 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 44 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 45 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 46 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 47 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 48 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 49 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 50 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 51 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 52 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 53 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 54 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 55 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 56 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 57 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 58 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 59 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 60 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 61 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 62 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 63 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 64 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 65 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 66 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 67 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 68 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 69 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 70 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 71 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 72 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 73 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 74 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 75 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 76 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 77 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 78 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 79 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 80 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 81 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 82 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 83 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 84 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 85 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 86 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 87 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 88 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 89 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 90 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 91 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 92 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 93 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 94 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 95 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 96 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 97 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 98 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 99 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 100 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 101 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 102 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 103 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 104 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 105 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 106 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 107 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 108 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 109 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 110 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 111 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 112 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 113 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 114 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+WARNING: [Synth 8-324] index 115 out of range [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:77]
+INFO: [Common 17-14] Message 'Synth 8-324' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+ERROR: [Synth 8-3380] loop condition does not converge after 2000 iterations [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:76]
+WARNING: [Synth 8-567] referenced signal 'ptIndex' should be on the sensitivity list [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:74]
+WARNING: [Synth 8-567] referenced signal 'points' should be on the sensitivity list [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:74]
+ERROR: [Synth 8-285] failed synthesizing module 'm_port_ultra_quickhull' [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_quickhull.v:3]
+ERROR: [Synth 8-285] failed synthesizing module 'm_port_ultra_processor_array' [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_processor_array.v:23]
+ERROR: [Synth 8-285] failed synthesizing module 'm_port_ultra' [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra.v:23]
+ERROR: [Synth 8-285] failed synthesizing module 'm_port_ultra_top' [C:/Users/Colin Cammarano/Workspace/USC/EE-454/EE-454-Project/Implementation/Vivado/EE454_Final_Project.srcs/sources_1/m_port_ultra_top.v:23]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:23 ; elapsed = 00:00:24 . Memory (MB): peak = 2007.320 ; gain = 1831.063
+---------------------------------------------------------------------------------
+RTL Elaboration failed
+INFO: [Common 17-83] Releasing license: Synthesis
+7 Infos, 102 Warnings, 0 Critical Warnings and 6 Errors encountered.
+synth_design failed
+ERROR: [Common 17-69] Command failed: Synthesis failed - please see the console or run log file for details
+INFO: [Common 17-206] Exiting Vivado at Sat Nov 07 21:54:38 2015...
