@@ -80,11 +80,6 @@ module m_quickhull_tb;
 	
 	initial begin : STIMULUS
 		
-		//file_results = $fopen("output_results.txt", "w");
-
-		// Initialize Inputs
-		// === Small input: 15 points ===
-	
 		//SS = 16;
 		//SS = 32;
 		//SS = 64;
