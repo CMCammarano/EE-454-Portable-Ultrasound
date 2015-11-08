@@ -15,15 +15,15 @@ module m_quickhull_tb;
 	reg CLK100MHZ;
 	reg CPU_RESETN;
 	reg [4095:0] points;
-	reg [15:0] SS;
+	reg [8:0] SS;
 
 	// Outputs
 	wire [4095:0] convexPoints;
 	wire [7:0] convexSetSize;
-	wire [15:0] positiveCrossCount;
+	wire [8:0] positiveCrossCount;
 	wire [31:0] crossValue;
 	wire [15:0] lnIndex;
-	wire [15:0] ptCount;
+	wire [8:0] ptCount;
 	wire [31:0] currLine;
 	wire [15:0] currPoint;
 	wire [15:0] furthest;
