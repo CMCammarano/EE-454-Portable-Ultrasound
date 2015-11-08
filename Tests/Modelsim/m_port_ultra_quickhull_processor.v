@@ -2,14 +2,14 @@
 
 module m_port_ultra_quickhull_processor (input CLK100MHZ,
 	input reg [4095:0] points,				//4096 / (8 * 2) = 256 points in each set
-	input reg [7:0] SS,
+	input reg [15:0] SS,
 	output reg [4095:0] convexPoints,
 	output [7:0] convexSetSizeOutput,
-	output [7:0] positiveCrossCountOutput,
+	output [15:0] positiveCrossCountOutput,
 	output [31:0] crossValueOutput,
 	output signed [31:0] furthestCrossValueOutput,
 	output [15:0] lnIndexOutput,
-	output [7:0] ptCountOutput,
+	output [15:0] ptCountOutput,
 	output [31:0] currentLineOutput,
 	output [15:0] currentPointOutput,
 	output [15:0] furthestOutput,
@@ -26,13 +26,13 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 	reg [15:0] lnIndex;					//Line Index: only need 13 bits, but 16 just in case
 	reg [15:0] cxIndex;					//Convex Index;only need 12 bits, but 16 just in case
 	reg [15:0] ptIndex;
-	reg [7:0] ptCount;
+	reg [15:0] ptCount;
 	reg [7:0] convexSetSize;
 
 	reg [PTSIZE - 1 : 0] xMinPoint;
 	reg [PTSIZE - 1 : 0] xMaxPoint;
 	reg [LNSIZE:0] line;
-	reg [7:0] positiveCrossCount;
+	reg [15:0] positiveCrossCount;
 	
 	reg [PTSIZE - 1 : 0] furthest;
 	reg [PTSIZE - 1 : 0] currPoint;
