@@ -392,7 +392,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 				// State Logic
 
 				//TODO: get number of positive cross and furthest point
-				if (positiveCrossCount == 1) begin
+				if (positiveCrossCount == 1 && lnIndex != 0) begin
 					nextCXAddr = currLine_A;
 					j = 0;
 					for (i = cxIndex; i < cxIndex + PTSIZE; i = i + 1) begin
@@ -406,8 +406,8 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 						j = j + 1;
 					end
 					cxIndex <= cxIndex + (2 * PTSIZE);
-					//convexSetSize <= convexSetSize + 2;
-					convexSetSize <= convexSetSize + 1;
+					convexSetSize <= convexSetSize + 2;
+					
 					/*
 					//nextLineAddr <= 0;
 					for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
@@ -417,7 +417,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 					*/
 					lnIndex <= lnIndex - LNSIZE;
 				end
-				else if (positiveCrossCount == 0) begin
+				else if (positiveCrossCount == 0 && lnIndex != 0) begin
 					nextCXAddr = currLine_A;
 					j = 0;
 					for (i = cxIndex; i < cxIndex + PTSIZE; i = i + 1) begin
