@@ -25,7 +25,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 	reg [LNSIZE * 256 - 1 : 0] lineFIFO;	//32 bits * number of points, just to be safe (100 points)
 	reg [15:0] lnIndex;					//Line Index: only need 13 bits, but 16 just in case
 	reg [15:0] cxIndex;					//Convex Index;only need 12 bits, but 16 just in case
-	reg [7:0] ptIndex;
+	reg [15:0] ptIndex;
 	reg [7:0] ptCount;
 	reg [7:0] convexSetSize;
 
@@ -359,8 +359,8 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 
 			CROSS: begin
 				//State Logic
-				if (crossValue > 0) begin
-				//if (crossValue > 0 && ptCount != (SS - 1)) begin
+				//if (crossValue > 0) begin
+				if (crossValue > 0 && ptCount != (SS)) begin
 					positiveCrossCount <= positiveCrossCount + 1;
 					if (furthestFlag == 0) begin
 						furthestCrossValue <= crossValue;
@@ -376,7 +376,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 				end
 
 				//NSL
-				if (ptCount != (SS - 1)) begin
+				if (ptCount != (SS)) begin
 					ptCount <= ptCount + 1;
 					state <= CROSS;
 				end
@@ -459,6 +459,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 					positiveCrossCount <= 0;
 					furthest <= 0;
 					furthestCrossValue <= 0;
+					ptCount <= 0;
 					state <= CROSS;
 				end
 				else begin
