@@ -29,13 +29,16 @@ string convertToBinary(int num){
 int main(){
 
 	int choice = 0;
+	int RANGE;
+	cout << "Enter range: "; cin >> RANGE; cout << endl;
 	cout << "Enter 1 for manual input, enter any other number to generate random: " << endl; cin >> choice; cout << endl;
+	// cout << "Enter filename: "; cin >> FILENAME;
 	vector<string>* binaryVector = new vector<string>;
 	vector<string>* decimalVector = new vector<string>;
-	ofstream fout("points.txt");
+	string FILENAME = to_string(choice) + "_points_" + to_string(RANGE) + "_range.txt";
+	ofstream fout(FILENAME.c_str());
 
 	string filler = "0000000000000000";
-
 
 		if (choice == 1){
 
@@ -99,8 +102,8 @@ int main(){
 		vector<string>* schemeVector = new vector<string>;
 
 		for (int i = 0; i < choice; ++i){
-			numA = rand() % 32;
-			numB = rand() % 32;
+			numA = rand() % RANGE;
+			numB = rand() % RANGE;
 			numStringA = convertToBinary(numA);
 			numStringB = convertToBinary(numB);
 			binaryVector -> push_back(numStringB + numStringA);
@@ -131,14 +134,11 @@ int main(){
 		for (int i = 0; i < 256 - binaryVector -> size(); ++i){
 			fout << filler;
 			if (i % 4 == 3){
-				fout << endl;
 			}
 		}
-		fout << endl;
 		for (int i = 0; i < binaryVector -> size(); ++i){
 			fout << binaryVector -> at(i);
 			if (i % 4 == 3){
-				fout << endl;
 			}
 		}
 	}
