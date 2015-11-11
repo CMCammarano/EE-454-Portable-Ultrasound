@@ -81,12 +81,16 @@
                             (flatten (list (hsplit list-of-points (make-line xmin xmax)) (hsplit list-of-points (make-line xmax xmin))))]))])))
 
 ;;Test cases
-;(define points (list (make-point 6 6) (make-point 8 5) (make-point 7 3) (make-point 9 7) (make-point 4 7) (make-point 5 2) (make-point 1 5) (make-point 6 4) (make-point 3 5) (make-point 2 4) (make-point 5 4) (make-point 6 5) (make-point 4 3) (make-point 9 12) (make-point 1 11)))
 (define points (list
-(make-point 82 155) (make-point 118 231) (make-point 130 108) (make-point 72 162) (make-point 242 217) (make-point 52 235) (make-point 47 4) (make-point 242 2) (make-point 36 39) (make-point 203 181) (make-point 109 195) (make-point 59 25) (make-point 15 140) (make-point 214 135) (make-point 65 157) (make-point 221 182) 
-(make-point 218 101) (make-point 67 117) (make-point 167 173) (make-point 171 90) (make-point 56 242) (make-point 249 165) (make-point 52 250) (make-point 171 41) (make-point 119 142) (make-point 66 104) (make-point 82 188) (make-point 112 44) (make-point 89 5) (make-point 214 90) (make-point 92 34) (make-point 246 214) 
-(make-point 81 73) (make-point 128 113) (make-point 114 88) (make-point 135 92) (make-point 50 209) (make-point 142 8) (make-point 110 169) (make-point 239 139) (make-point 62 126) (make-point 146 108) (make-point 10 138) (make-point 224 152) (make-point 198 160) (make-point 226 216) (make-point 157 227) (make-point 86 43) 
-(make-point 106 91) (make-point 131 71) ))
+(make-point 98 211) (make-point 239 196) (make-point 5 113) (make-point 132 63) (make-point 234 133) (make-point 28 93) (make-point 101 130) (make-point 9 76) (make-point 28 155) (make-point 151 208) (make-point 185 158) (make-point 94 163) (make-point 192 18) (make-point 188 49) (make-point 141 193) (make-point 62 129) 
+(make-point 197 164) (make-point 131 161) (make-point 244 155) (make-point 57 89) (make-point 231 192) (make-point 72 203) (make-point 169 19) (make-point 26 235) (make-point 193 40) (make-point 186 169) (make-point 108 210) (make-point 155 197) (make-point 14 203) (make-point 133 36) (make-point 181 66) (make-point 114 199) 
+(make-point 43 82) (make-point 210 133) (make-point 229 62) (make-point 41 245) (make-point 167 45) (make-point 76 17) (make-point 40 255) (make-point 179 117) (make-point 164 253) (make-point 110 164) (make-point 216 203) (make-point 254 103) (make-point 200 143) (make-point 206 221) (make-point 183 166) (make-point 234 202) 
+(make-point 158 71) (make-point 101 233) (make-point 252 20) (make-point 141 247) (make-point 74 118) (make-point 30 68) (make-point 96 74) (make-point 17 99) (make-point 202 79) (make-point 160 30) (make-point 118 82) (make-point 221 17) (make-point 249 111) (make-point 151 116) (make-point 139 234) (make-point 147 49) 
+))
+
+
+
+
 (define start-time current-seconds)
 (define hull-points (quickhull points))
 (define end-time current-seconds)
