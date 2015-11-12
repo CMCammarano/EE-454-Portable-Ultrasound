@@ -84,87 +84,6 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 	integer i = 0;
 	integer j = 0;
 	
-	/*
-	always @(posedge CLK100MHZ) begin
-	
-		ptIndex = PTSIZE * ptCount;
-
-		for (i = ptIndex; i < ptIndex + PTSIZE; i = i + 1) begin
-			currPoint[j] = points[i];
-			j = j + 1;
-		end
-	
-		for (i = ptIndex; i < ptIndex + (PTSIZE / 2); i = i + 1) begin
-			currPoint_X[j] = points[i];
-			j = j + 1;
-		end
-			
-		for (i = ptIndex + (PTSIZE / 2); i < ptIndex + PTSIZE; i = i + 1) begin
-			currPoint_Y[j] = points[i];
-			j = j + 1;
-		end
-			
-
-		for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
-			currLine[j] = lineFIFO[i];
-			j = j + 1;
-		end
-			
-		for (i = lnIndex; i < lnIndex + (LNSIZE/2); i = i + 1) begin
-			currLine_A[j] = lineFIFO[i];
-			j = j + 1;
-		end
-			
-		for (i = lnIndex; i < lnIndex + (PTSIZE/2); i = i + 1) begin
-			currLine_AX[j] = lineFIFO[i];
-			j = j + 1;
-		end
-			
-		for (i = lnIndex + (PTSIZE / 2); i < lnIndex + PTSIZE; i = i + 1) begin
-			currLine_AY[j] = lineFIFO[i];
-			j = j + 1;
-		end
-			
-
-		for (i = lnIndex + (LNSIZE/2); i < lnIndex + LNSIZE; i = i + 1) begin
-			currLine_B [j] = lineFIFO[i];
-			j = j + 1;
-		end
-			
-		for (i = lnIndex + PTSIZE; i < lnIndex + LNSIZE - (PTSIZE/2); i = i + 1) begin
-			currLine_BX[j] = lineFIFO[i];
-			j = j + 1;
-		end
-			
-		for (i = lnIndex + LNSIZE - (PTSIZE / 2); i < lnIndex + LNSIZE; i = i + 1) begin
-			currLine_BY[j] = lineFIFO[i];
-			j = j + 1;
-		end
-
-		for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
-			nextLineAddr[j] = lineFIFO[i];
-			j = j + 1;
-		end
-			
-		for (i = lnIndex + LNSIZE; i < lnIndex + (LNSIZE * 2); i = i + 1) begin
-			nextLineAddr2[j] = lineFIFO[i];
-			j = j + 1;
-		end
-			
-		for (i = cxIndex; i < cxIndex + PTSIZE; i = i + 1) begin
-			nextCXAddr [j] = points[i];
-			j = j + 1;
-		end
-			
-		for (i = cxIndex + PTSIZE; i < cxIndex + (PTSIZE * 2); i = i + 1) begin
-			nextCXAddr2[j] = points[i];
-			j = j + 1;
-		end
-			
-		crossValue = (((currLine_AX - currPoint_X) * (currLine_BY - currPoint_Y)) - ((currLine_AY - currPoint_Y) * (currLine_BX - currPoint_X)));
-	end
-	*/
-	
 	//NSL, register assignents, and State Machine
 	always @(posedge CLK100MHZ, negedge CPU_RESETN) begin
 		
@@ -232,30 +151,6 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 		
 		j = 0;
 	
-/* 	
-		for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
-			nextLineAddr[j] = lineFIFO[i];
-			j = j + 1;
-		end
-		
-		j = 0;
-		for (i = lnIndex + LNSIZE; i < lnIndex + (LNSIZE * 2); i = i + 1) begin
-			nextLineAddr2[j] = lineFIFO[i];
-			j = j + 1;
-		end
-		
-		j = 0;
-		for (i = cxIndex; i < cxIndex + PTSIZE; i = i + 1) begin
-			nextCXAddr[j] = convexPoints[i];
-			j = j + 1;
-		end
-		
-		j = 0;
-		for (i = cxIndex + PTSIZE; i < cxIndex + (PTSIZE * 2); i = i + 1) begin
-			nextCXAddr2[j] = convexPoints[i];
-			j = j + 1;
-		end
-			 */
 		crossValue = (((currLine_AX - currPoint_X) * (currLine_BY - currPoint_Y)) - ((currLine_AY - currPoint_Y) * (currLine_BX - currPoint_X)));
 	
 		if (!CPU_RESETN) begin
@@ -359,7 +254,6 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 
 			CROSS: begin
 				//State Logic
-				//if (crossValue > 0) begin
 				if (crossValue > 0 && ptCount != (SS)) begin
 					positiveCrossCount <= positiveCrossCount + 1;
 					if (furthestFlag == 0) begin
@@ -407,14 +301,6 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 					end
 					cxIndex <= cxIndex + (2 * PTSIZE);
 					convexSetSize <= convexSetSize + 2;
-					
-					/*
-					//nextLineAddr <= 0;
-					for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
-						lineFIFO[i] = 0;
-						j = j + 1;
-					end
-					*/
 					lnIndex <= lnIndex - LNSIZE;
 				end
 				else if (positiveCrossCount == 0 && lnIndex != 0) begin
@@ -426,21 +312,12 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 					end
 					cxIndex <= cxIndex + PTSIZE;
 					convexSetSize <= convexSetSize + 1;
-
-					/*
-					//nextLineAddr <= 0;
-					for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
-						lineFIFO[i] = 0;
-						j = j + 1;
-					end
-					*/
 					lnIndex <= lnIndex - LNSIZE;
 				end
 				else begin
 					nextLineAddr 	= {furthest, currLine_A};
 					nextLineAddr2	= {currLine_B, furthest};
-					//nextLineAddr = {currLine_A[15],currLine_A[14],currLine_A[13],currLine_A[12],currLine_A[11],currLine_A[10],currLine_A[9],currLine_A[8],currLine_A[7],currLine_A[6],currLine_A[5],currLine_A[4],currLine_A[3],currLine_A[2],currLine_A[1],currLine_A[0],furthest[15],furthest[14],furthest[13],furthest[12],furthest[11],furthest[10],furthest[9],furthest[8],furthest[7],furthest[6],furthest[5],furthest[4],furthest[3],furthest[2],furthest[1],furthest[0]};
-					//nextLineAddr2 = {furthest[15],furthest[14],furthest[13],furthest[12],furthest[11],furthest[10],furthest[9],furthest[8],furthest[7],furthest[6],furthest[5],furthest[4],furthest[3],furthest[2],furthest[1],furthest[0],currLine_B[15],currLine_B[14],currLine_B[13],currLine_B[12],currLine_B[11],currLine_B[10],currLine_B[9],currLine_B[8],currLine_B[7],currLine_B[6],currLine_B[5],currLine_B[4],currLine_B[3],currLine_B[2],currLine_B[1],currLine_B[0]};
+
 					j = 0;
 					for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
 						lineFIFO[i] = nextLineAddr[j];
