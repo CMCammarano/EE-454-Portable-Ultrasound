@@ -1,33 +1,28 @@
 //`timescale 1 ns / 100 ps
 
-module m_port_ultra_quickhull_processor (input CLK100MHZ,
-	input reg [4095:0] points,				//4096 / (8 * 2) = 256 points in each set
-	input reg [8:0] SS,
-	output reg [4095:0] convexPoints,
-	output [7:0] convexSetSizeOutput,
-	output [8:0] positiveCrossCountOutput,
-	output [31:0] crossValueOutput,
-	output signed [31:0] furthestCrossValueOutput,
-	output [15:0] lnIndexOutput,
-	output [8:0] ptCountOutput,
-	output [31:0] currentLineOutput,
-	output [15:0] currentPointOutput,
-	output [15:0] furthestOutput,
-	output [15:0] xMinPointOutput,
-	output [15:0] xMaxPointOutput,
-	output QINITIAL, QFIND_MAX, QFIND_MIN, QHULL_START, QCROSS, QHULL_RECURSE, QEND,
-	input CPU_RESETN);		//Same as points, 256 points
+module m_port_ultra_quickhull
+(
+	input clk,
+	input reset_n,
+	input processorEnable,
+	input [4095:0] convexCloud,				//4096 / (8 * 2) = 256 convexCloud in each set
+	input [8:0] convexCloudSize,
+	output [4095:0] convexPointsOutput,
+	output [8:0] convexSetSizeOutput,
+	output processorDone
+);		//Same as convexCloud, 256 convexCloud
 
 	// Variables
 	localparam PTSIZE = 16;					//Point Size: 16 bits long, two 8 bit dimensions
 	localparam LNSIZE = 32;					//Line Size = 2 coordinates:  32 bits long
-	// localparam SS = 256;					//Set Size, need to count up to 256 = 8 bits
-	reg [LNSIZE * 256 - 1 : 0] lineFIFO;	//32 bits * number of points, just to be safe (100 points)
+	// localparam convexCloudSize = 256;					//Set Size, need to count up to 256 = 8 bits
+	reg [LNSIZE * 256 - 1 : 0] lineFIFO;	//32 bits * number of convexCloud, just to be safe (100 convexCloud)
 	reg [15:0] lnIndex;					//Line Index: only need 13 bits, but 16 just in case
 	reg [15:0] cxIndex;					//Convex Index;only need 12 bits, but 16 just in case
 	reg [15:0] ptIndex;
 	reg [8:0] ptCount;
-	reg [7:0] convexSetSize;
+	reg [4096:0] convexPoints;
+	reg [8:0] convexSetSize;
 
 	reg [PTSIZE - 1 : 0] xMinPoint;
 	reg [PTSIZE - 1 : 0] xMaxPoint;
@@ -53,18 +48,12 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 	reg [PTSIZE - 1: 0] nextCXAddr2;
 
 	reg furthestFlag;
+	reg done;
 	
+	// Output assignment
 	assign convexSetSizeOutput = convexSetSize;
-	assign positiveCrossCountOutput = positiveCrossCount;
-	assign crossValueOutput = crossValue;
-	assign lnIndexOutput = lnIndex;
-	assign ptCountOutput = ptCount;
-	assign currentLineOutput = currLine;
-	assign currentPointOutput = currPoint;
-	assign furthestOutput = furthest;
-	assign xMinPointOutput = xMinPoint;
-	assign xMaxPointOutput = xMaxPoint;
-	assign furthestCrossValueOutput = furthestCrossValue;
+	assign convexPointsOutput = convexPoints;
+	assign processorDone = done;
 
 	// State Machine Implementation
 	reg[6:0] state;
@@ -81,79 +70,116 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 		END 			=	7'b1000000;
 
 	// For loop integers
-	integer i = 0;
-	integer j = 0;
+	integer i;
+	integer j;
+
+	generate
+		always @(clk) begin
+			j = 0;
+			for (i = ptIndex; i < ptIndex + PTSIZE; i = i + 1) begin
+				currPoint[j] = convexCloud[i];
+				j = j + 1;
+			end
+		end
+	endgenerate
+	
+	generate
+		always @(clk) begin
+			j = 0;
+			for (i = ptIndex; i < ptIndex + (PTSIZE / 2); i = i + 1) begin
+				currPoint_X[j] = convexCloud[i];
+				j = j + 1;
+			end
+		end
+	endgenerate
+			
+	generate
+		always @(clk) begin
+			j = 0;
+			for (i = ptIndex + (PTSIZE / 2); i < ptIndex + PTSIZE; i = i + 1) begin
+				currPoint_Y[j] = convexCloud[i];
+				j = j + 1;
+			end
+		end
+	endgenerate
+			
+	generate
+		always @(clk) begin
+			j = 0;
+			for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
+				currLine[j] = lineFIFO[i];
+				j = j + 1;
+			end
+		end
+	endgenerate
+	
+	generate
+		always @(clk) begin
+			j = 0;
+			for (i = lnIndex; i < lnIndex + (LNSIZE/2); i = i + 1) begin
+				currLine_A[j] = lineFIFO[i];
+				j = j + 1;
+			end
+		end
+	endgenerate
+		
+	generate
+		always @(clk) begin
+			j = 0;
+			for (i = lnIndex; i < lnIndex + (PTSIZE/2); i = i + 1) begin
+				currLine_AX[j] = lineFIFO[i];
+				j = j + 1;
+			end
+		end
+	endgenerate
+		
+	generate
+		always @(clk) begin
+			j = 0;
+			for (i = lnIndex + (PTSIZE / 2); i < lnIndex + PTSIZE; i = i + 1) begin
+				currLine_AY[j] = lineFIFO[i];
+				j = j + 1;
+			end
+		end
+	endgenerate
+			
+	generate
+		always @(clk) begin
+			j = 0;
+			for (i = lnIndex + (LNSIZE/2); i < lnIndex + LNSIZE; i = i + 1) begin
+				currLine_B [j] = lineFIFO[i];
+				j = j + 1;
+			end
+		end
+	endgenerate
+		
+	generate
+		always @(clk) begin
+			j = 0;
+			for (i = lnIndex + PTSIZE; i < lnIndex + LNSIZE - (PTSIZE/2); i = i + 1) begin
+				currLine_BX[j] = lineFIFO[i];
+				j = j + 1;
+			end
+		end
+	endgenerate
+	
+	generate
+		always @(clk) begin
+			j = 0;
+			for (i = lnIndex + LNSIZE - (PTSIZE / 2); i < lnIndex + LNSIZE; i = i + 1) begin
+				currLine_BY[j] = lineFIFO[i];
+				j = j + 1;
+			end
+		end
+	endgenerate
 	
 	//NSL, register assignents, and State Machine
-	always @(posedge CLK100MHZ, negedge CPU_RESETN) begin
+	always @(posedge clk, negedge reset_n) begin
 		
 		ptIndex = PTSIZE * ptCount;
-
-		j = 0;
-		for (i = ptIndex; i < ptIndex + PTSIZE; i = i + 1) begin
-			currPoint[j] = points[i];
-			j = j + 1;
-		end
-	
-		j = 0;
-		for (i = ptIndex; i < ptIndex + (PTSIZE / 2); i = i + 1) begin
-			currPoint_X[j] = points[i];
-			j = j + 1;
-		end
-			
-		j = 0;
-		for (i = ptIndex + (PTSIZE / 2); i < ptIndex + PTSIZE; i = i + 1) begin
-			currPoint_Y[j] = points[i];
-			j = j + 1;
-		end
-			
-		j = 0;
-		for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
-			currLine[j] = lineFIFO[i];
-			j = j + 1;
-		end
-			
-		j = 0;
-		for (i = lnIndex; i < lnIndex + (LNSIZE/2); i = i + 1) begin
-			currLine_A[j] = lineFIFO[i];
-			j = j + 1;
-		end
-		
-		j = 0;
-		for (i = lnIndex; i < lnIndex + (PTSIZE/2); i = i + 1) begin
-			currLine_AX[j] = lineFIFO[i];
-			j = j + 1;
-		end
-		
-		j = 0;
-		for (i = lnIndex + (PTSIZE / 2); i < lnIndex + PTSIZE; i = i + 1) begin
-			currLine_AY[j] = lineFIFO[i];
-			j = j + 1;
-		end
-			
-		j = 0;
-		for (i = lnIndex + (LNSIZE/2); i < lnIndex + LNSIZE; i = i + 1) begin
-			currLine_B [j] = lineFIFO[i];
-			j = j + 1;
-		end
-			
-		j = 0;
-		for (i = lnIndex + PTSIZE; i < lnIndex + LNSIZE - (PTSIZE/2); i = i + 1) begin
-			currLine_BX[j] = lineFIFO[i];
-			j = j + 1;
-		end
-		
-		j = 0;
-		for (i = lnIndex + LNSIZE - (PTSIZE / 2); i < lnIndex + LNSIZE; i = i + 1) begin
-			currLine_BY[j] = lineFIFO[i];
-			j = j + 1;
-		end
-		
-		j = 0;
-	
 		crossValue = (((currLine_AX - currPoint_X) * (currLine_BY - currPoint_Y)) - ((currLine_AY - currPoint_Y) * (currLine_BX - currPoint_X)));
 	
-		if (!CPU_RESETN) begin
+		if (!reset_n) begin
 			//Reset
 			state <= INITIAL;
 		end
@@ -175,8 +201,12 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 				furthestFlag <= 0;
 				convexSetSize <= 0;
 				convexPoints <= 0;
+				done <= 0;
+				
 				// NSL
-				state <= FIND_XMAX;
+				if (processorEnable) begin
+					state <= FIND_XMAX;
+				end
 
 			end
 
@@ -195,7 +225,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 				end
 
 				//NSL
-				if (ptCount != (SS - 1)) begin
+				if (ptCount != (convexCloudSize - 1)) begin
 					ptCount <= ptCount + 1;
 					state <= FIND_XMAX;			
 				end
@@ -220,7 +250,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 				end
 
 				//NSL
-				if (ptCount != (SS - 1)) begin
+				if (ptCount != (convexCloudSize - 1)) begin
 					ptCount <= ptCount + 1;
 					state <= FIND_XMIN;					
 				end
@@ -254,7 +284,8 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 
 			CROSS: begin
 				//State Logic
-				if (crossValue > 0 && ptCount != (SS)) begin
+				//if (crossValue > 0) begin
+				if (crossValue > 0 && ptCount != (convexCloudSize)) begin
 					positiveCrossCount <= positiveCrossCount + 1;
 					if (furthestFlag == 0) begin
 						furthestCrossValue <= crossValue;
@@ -270,7 +301,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 				end
 
 				//NSL
-				if (ptCount != (SS)) begin
+				if (ptCount != (convexCloudSize)) begin
 					ptCount <= ptCount + 1;
 					state <= CROSS;
 				end
@@ -301,6 +332,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 					end
 					cxIndex <= cxIndex + (2 * PTSIZE);
 					convexSetSize <= convexSetSize + 2;
+					
 					lnIndex <= lnIndex - LNSIZE;
 				end
 				else if (positiveCrossCount == 0 && lnIndex != 0) begin
@@ -312,12 +344,13 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 					end
 					cxIndex <= cxIndex + PTSIZE;
 					convexSetSize <= convexSetSize + 1;
+
 					lnIndex <= lnIndex - LNSIZE;
 				end
 				else begin
 					nextLineAddr 	= {furthest, currLine_A};
 					nextLineAddr2	= {currLine_B, furthest};
-
+					
 					j = 0;
 					for (i = lnIndex; i < lnIndex + LNSIZE; i = i + 1) begin
 						lineFIFO[i] = nextLineAddr[j];
@@ -340,6 +373,7 @@ module m_port_ultra_quickhull_processor (input CLK100MHZ,
 					state <= CROSS;
 				end
 				else begin
+					done <= 1;
 					state <= END;
 				end
 			end
