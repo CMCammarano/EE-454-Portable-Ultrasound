@@ -24,19 +24,31 @@ module m_port_ultra (
 	input clk,
 	input reset_n,
 	input ack,
-	input [16383:0] convexCloud,
+	input [32767:0] convexCloud,
 	output [4095:0] convexHull1,
 	output [4095:0] convexHull2,
 	output [4095:0] convexHull3,
 	output [4095:0] convexHull4,
+	output [4095:0] convexHull5,
+	output [4095:0] convexHull6,
+	output [4095:0] convexHull7,
+	output [4095:0] convexHull8,
 	output [8:0] convexHullSize1,
 	output [8:0] convexHullSize2,
 	output [8:0] convexHullSize3,
 	output [8:0] convexHullSize4,
+	output [8:0] convexHullSize5,
+	output [8:0] convexHullSize6,
+	output [8:0] convexHullSize7,
+	output [8:0] convexHullSize8,
 	output processorDone1,
 	output processorDone2,
 	output processorDone3,
 	output processorDone4,
+	output processorDone5,
+	output processorDone6,
+	output processorDone7,
+	output processorDone8,
 	output QINIT,
 	output QPULSE,
 	output QDIVIDE,
@@ -62,14 +74,26 @@ module m_port_ultra (
 		.convexHull2 (convexHull2),
 		.convexHull3 (convexHull3),
 		.convexHull4 (convexHull4),
+		.convexHull5 (convexHull5),
+		.convexHull6 (convexHull6),
+		.convexHull7 (convexHull7),
+		.convexHull8 (convexHull8),
 		.convexHullSize1 (convexHullSize1),
 		.convexHullSize2 (convexHullSize2),
 		.convexHullSize3 (convexHullSize3),
 		.convexHullSize4 (convexHullSize4),
+		.convexHullSize5 (convexHullSize5),
+		.convexHullSize6 (convexHullSize6),
+		.convexHullSize7 (convexHullSize7),
+		.convexHullSize8 (convexHullSize8),
 		.processorDone1 (processorDone1),
 		.processorDone2 (processorDone2),
 		.processorDone3 (processorDone3),
-		.processorDone4 (processorDone4)
+		.processorDone4 (processorDone4),
+		.processorDone5 (processorDone5),
+		.processorDone6 (processorDone6),
+		.processorDone7 (processorDone7),
+		.processorDone8 (processorDone8)
 	);
 	
 	// State Machine
@@ -127,7 +151,7 @@ module m_port_ultra (
 				
 				CONVEX_HULL: begin 
 					
-					if (processorDone1 && processorDone2 && processorDone3 && processorDone4) begin
+					if (processorDone1 && processorDone2 && processorDone3 && processorDone4 && processorDone5 && processorDone6 && processorDone7 && processorDone8) begin
 						state <= DISPLAY;
 					end
 				end
